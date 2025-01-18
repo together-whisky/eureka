@@ -1,0 +1,17 @@
+eureka:
+  client:
+    fetch-registry: 'false'
+    register-with-eureka: 'false'
+logging:
+  level:
+    com:
+      netflix:
+        discovery: DEBUG
+    org:
+      springframework:
+        cloud: DEBUG
+spring:
+  application:
+    name: eureka
+server:
+  port: '8761'

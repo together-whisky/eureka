@@ -1,5 +1,6 @@
 package together_whisky.eureka;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -15,6 +16,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Value("${security.id}")
+    private String securityId;
+
+    @Value("${security.pw}")
+    private String securityPw;
 
     /**
      * 비밀번호 암호화
@@ -45,8 +52,8 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
-                .username("admin")
-                .password(bCryptPasswordEncoder().encode("1234"))
+                .username(securityId)
+                .password(bCryptPasswordEncoder().encode(securityPw))
                 .roles("ADMIN")
                 .build();
 

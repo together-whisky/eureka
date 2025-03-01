@@ -15,3 +15,7 @@ spring:
     name: eureka
 server:
   port: '8761'
+
+security:
+  id: admin
+  pw: 1234

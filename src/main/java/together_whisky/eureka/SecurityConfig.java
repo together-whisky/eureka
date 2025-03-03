@@ -17,11 +17,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${security.id}")
-    private String securityId;
+    private final String securityId;
+    private final String securityPw;
 
-    @Value("${security.pw}")
-    private String securityPw;
+    public SecurityConfig(@Value("${security.id}") String securityId,
+        @Value("${security.pw}") String securityPw) {
+        this.securityId = securityId;
+        this.securityPw = securityPw;
+    }
 
     /**
      * 비밀번호 암호화
@@ -30,7 +33,6 @@ public class SecurityConfig {
      */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -43,6 +45,7 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http.csrf((auth) -> auth.disable())
             .authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/eureka/**").permitAll()  // Eureka 요청 허용
@@ -54,6 +57,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
+
         UserDetails user = User.builder()
             .username(securityId)
             .password(bCryptPasswordEncoder().encode(securityPw))

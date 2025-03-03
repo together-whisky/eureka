@@ -25,15 +25,18 @@ public class SecurityConfig {
 
     /**
      * 비밀번호 암호화
+     *
      * @return
      */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
     /**
      * 모든 경우의 reuqest에 대한 패스워드 입력 처리
+     *
      * @param http
      * @return
      * @throws Exception
@@ -42,8 +45,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf((auth) -> auth.disable())
             .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/eureka/**").permitAll()  // Eureka 요청 허용
-                    .anyRequest().authenticated())
+                .requestMatchers("/eureka/**").permitAll()  // Eureka 요청 허용
+                .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults());
 
         return http.build();
@@ -52,10 +55,10 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
-                .username(securityId)
-                .password(bCryptPasswordEncoder().encode(securityPw))
-                .roles("ADMIN")
-                .build();
+            .username(securityId)
+            .password(bCryptPasswordEncoder().encode(securityPw))
+            .roles("ADMIN")
+            .build();
 
         return new InMemoryUserDetailsManager(user);
     }
